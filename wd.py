@@ -1,11 +1,10 @@
 import subprocess, time, signal, sys, os, sys, psutil
 import logging
 
-max_memory_per_process = 300 # Mb
+max_memory_per_process = 8000 # Mb
 
 commands = [
-    ["test.py", "1"],
-    ["test.py", "2"]
+    ["../protein_holography/network/train.py"]
 ]
 
 sigint_dict = {}
@@ -23,7 +22,8 @@ def respawn_dead():
                 output[i].close()
             output[i] = open("stdout_{}.txt".format(i), "a")
             processes[i] = subprocess.Popen([python] + command,
-                                            stdout=output[i])
+                                            stdout=output[i],
+                                            stderr=output[i])
         elif processes[i] is False:
             pass # finished
         else:
